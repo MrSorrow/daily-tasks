@@ -2,7 +2,8 @@ package bbgg.daily.task;
 
 import bbgg.daily.task.api.hefeng.CityApi;
 import bbgg.daily.task.api.hefeng.WeatherApi;
-import bbgg.daily.task.api.hefeng.model.LocationResult;
+import bbgg.daily.task.api.hefeng.model.City;
+import bbgg.daily.task.api.hefeng.model.CityResult;
 import bbgg.daily.task.api.hefeng.model.WeatherResult;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
@@ -36,10 +37,10 @@ class DemoApplicationTests {
 
 	@Test
 	void testWeatherCityInfo() {
-		LocationResult locationResult = cityApi.queryCityInfo("上海");
-		System.out.println(locationResult);
+		CityResult cityResult = cityApi.queryCityInfo("上海");
+		System.out.println(cityResult);
 
-		LocationResult.Location location = locationResult.getLocation().get(0);
+		City location = cityResult.getLocation().get(0);
 
 		WeatherResult weatherResult = weatherApi.queryWeatherInfo(location.getId());
 		System.out.println(weatherResult);
