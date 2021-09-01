@@ -16,6 +16,10 @@ import java.util.List;
 @ToString
 public abstract class Result {
 
+    /**
+     * API 请求状态码
+     * https://dev.qweather.com/docs/start/status-code/
+     */
     private String code;
     private Refer refer;
 
@@ -24,7 +28,13 @@ public abstract class Result {
     @Setter
     @ToString
     public static class Refer {
+        /**
+         * 原始数据来源，或数据源说明，可能为空
+         */
         private List<String> sources;
+        /**
+         * 数据许可或版权声明，可能为空
+         */
         private List<String> license;
     }
 }
