@@ -4,6 +4,7 @@ import bbgg.daily.task.api.hefeng.CityApi;
 import bbgg.daily.task.api.hefeng.WeatherApi;
 import bbgg.daily.task.api.hefeng.model.City;
 import bbgg.daily.task.api.hefeng.model.CityResult;
+import bbgg.daily.task.api.hefeng.model.TopCityResult;
 import bbgg.daily.task.api.hefeng.model.WeatherResult;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
@@ -32,7 +33,7 @@ class DemoApplicationTests {
 
 		WxCpMessage message = WxCpMessage.TEXT().agentId(1000002).toParty("1").content("Hello World").build();
 
-		wxCpService.getMessageService().send(message);
+//		wxCpService.getMessageService().send(message);
 	}
 
 	@Test
@@ -40,10 +41,19 @@ class DemoApplicationTests {
 		CityResult cityResult = cityApi.queryCityInfo("上海");
 		System.out.println(cityResult);
 
+		TopCityResult topCityResult = cityApi.queryTopCityInfo("cn");
+		System.out.println(topCityResult);
+
 		City location = cityResult.getLocation().get(0);
 
-		WeatherResult weatherResult = weatherApi.queryWeatherInfo(location.getId());
+		WeatherResult weatherResult = weatherApi.queryWeatherNow(location.getId());
 		System.out.println(weatherResult);
+
+		WeatherResult weatherResult1 = weatherApi.queryNextDaysWeather(3, location.getId());
+		System.out.println(weatherResult1.getDaily());
+
+		WeatherResult weatherResult2 = weatherApi.queryNextHoursWeather(24, location.getId());
+		System.out.println(weatherResult2.getHourly());
 	}
 
 }
