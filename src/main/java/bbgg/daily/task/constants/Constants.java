@@ -14,4 +14,7 @@ public class Constants {
 
 
     public static final String HEFENG_WEATHER_KEY = "556c4eb72cc04bb986ebda1ac4a3676f";
+
+    public static final String XU_HUI_LOCATION_ID = "101021200";
+    public static final String CHANG_NING_LOCATION_ID = "101021300";
 }
