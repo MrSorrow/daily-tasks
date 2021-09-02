@@ -7,7 +7,6 @@ import bbgg.daily.task.api.hefeng.model.CityResult;
 import bbgg.daily.task.api.hefeng.model.TopCityResult;
 import bbgg.daily.task.api.hefeng.model.WeatherResult;
 import bbgg.daily.task.constants.Constants;
-import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;

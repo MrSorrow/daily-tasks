@@ -37,7 +37,7 @@ public class DailyWeather {
     @Autowired
     private WeatherApi weatherApi;
 
-    @Scheduled(cron = "0 20 7 * * ? ")
+    @Scheduled(cron = "0 1 6 * * ? ")
     public void toMissZhou() {
 
         CITIES_MAP.forEach((city, location) -> {
