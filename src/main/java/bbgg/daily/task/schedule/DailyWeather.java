@@ -41,14 +41,14 @@ public class DailyWeather {
     public void toMissZhou() {
 
         CITIES_MAP.forEach((city, location) -> {
-            WeatherResult weatherResult = weatherApi.queryWeatherNow(Constants.CHANG_NING_LOCATION_ID);
+            WeatherResult weatherResult = weatherApi.queryWeatherNow(location);
             WeatherResult.NowWeather now = weatherResult.getNow();
 
             int days = 3;
-            WeatherResult nextDaysWeather = weatherApi.queryNextDaysWeather(days, Constants.CHANG_NING_LOCATION_ID);
+            WeatherResult nextDaysWeather = weatherApi.queryNextDaysWeather(days, location);
 
             StringBuilder sb = new StringBuilder();
-            sb.append("长宁区天气预报：\r\n")
+            sb.append(city).append("天气预报：\r\n")
                     .append("· 天气：").append(now.getText()).append("\r\n")
                     .append("· 温度：").append(now.getTemp()).append("℃").append("\r\n")
                     .append("· 体感温度：").append(now.getFeelsLike()).append("℃").append("\r\n")
