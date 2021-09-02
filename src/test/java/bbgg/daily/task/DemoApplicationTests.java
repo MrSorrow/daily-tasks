@@ -75,9 +75,10 @@ class DemoApplicationTests {
                 .append("· 天气：").append(now.getText()).append("\r\n")
                 .append("· 温度：").append(now.getTemp()).append("℃").append("\r\n")
                 .append("· 体感温度：").append(now.getFeelsLike()).append("℃").append("\r\n")
+                .append("· 详细数据：").append("<a href=\"").append(weatherResult.getFxLink()).append("\">点击查看</a>").append("\r\n")
                 .append("· 数据观测于：").append(DateUtil.format(now.getObsTime(), "MM-dd HH:mm")).append("\r\n");
 
-        sb.append("未来").append(days).append("天的天气状况：");
+        sb.append("\r\n").append("未来").append(days).append("天的天气状况：");
 
         if (nextDaysWeather != null) {
             List<WeatherResult.DayWeather> dailyWeather = nextDaysWeather.getDaily();
