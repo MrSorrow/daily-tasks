@@ -28,9 +28,13 @@ public class DailyFund {
     private static final List<String> FUND_CODE_LIST;
 
     static {
-        FUND_CODE_LIST = new ArrayList<>(2);
+        FUND_CODE_LIST = new ArrayList<>(6);
         FUND_CODE_LIST.add("161725");
         FUND_CODE_LIST.add("160225");
+        FUND_CODE_LIST.add("008282");
+        FUND_CODE_LIST.add("160222");
+        FUND_CODE_LIST.add("006757");
+        FUND_CODE_LIST.add("001579");
     }
 
     @Autowired
