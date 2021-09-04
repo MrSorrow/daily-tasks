@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class DailyWeather {
     private static final Map<String, String> CITIES_MAP;
 
     static {
-        CITIES_MAP = new HashMap<>(2);
+        CITIES_MAP = new LinkedHashMap<>(2);
         CITIES_MAP.put("徐汇区", Constants.XU_HUI_LOCATION_ID);
         CITIES_MAP.put("长宁区", Constants.CHANG_NING_LOCATION_ID);
     }

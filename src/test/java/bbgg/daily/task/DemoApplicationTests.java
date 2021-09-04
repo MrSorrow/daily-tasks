@@ -1,5 +1,8 @@
 package bbgg.daily.task;
 
+import bbgg.daily.task.api.fund.FundApi;
+import bbgg.daily.task.api.fund.model.Expansion;
+import bbgg.daily.task.api.fund.model.PredictResult;
 import bbgg.daily.task.api.hefeng.CityApi;
 import bbgg.daily.task.api.hefeng.WeatherApi;
 import bbgg.daily.task.api.hefeng.model.City;
@@ -8,6 +11,7 @@ import bbgg.daily.task.api.hefeng.model.TopCityResult;
 import bbgg.daily.task.api.hefeng.model.WeatherResult;
 import bbgg.daily.task.constants.Constants;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONUtil;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
 import me.chanjar.weixin.cp.bean.message.WxCpMessage;
@@ -16,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -25,6 +30,8 @@ class DemoApplicationTests {
     private WeatherApi weatherApi;
     @Autowired
     private CityApi cityApi;
+    @Autowired
+    private FundApi fundApi;
 
     @Test
     void testSendMessage() throws WxErrorException {
@@ -105,4 +112,39 @@ class DemoApplicationTests {
 
     }
 
+
+    @Test
+    void testPredictFund() throws WxErrorException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("【基金行情播报】\r\n");
+
+        List<String> FUND_CODE_LIST = new ArrayList<>(2);
+        FUND_CODE_LIST.add("161725");
+        FUND_CODE_LIST.add("160225");
+
+        for (int i = 0; i < FUND_CODE_LIST.size(); i++) {
+
+            String json = fundApi.queryPredictResult(FUND_CODE_LIST.get(i));
+            PredictResult predictResult = JSONUtil.toBean(json, PredictResult.class);
+            Expansion expansion = predictResult.getExpansion();
+
+            sb.append("\r\n").append("[").append(i + 1).append("]")
+                    .append(expansion.getShortName()).append(":").append("\r\n")
+                    .append("· 估值：").append(expansion.getGz()).append("\r\n")
+                    .append("· 估算涨幅：").append(expansion.getGszzl()).append("%").append("\r\n")
+                    .append("· 预测时间：").append(DateUtil.format(expansion.getGztime(), "MM-dd HH:mm")).append("\r\n");
+
+        }
+
+        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
+        config.setCorpId("wwfa47dbc0016a7a49");      // 设置微信企业号的appid
+        config.setCorpSecret("CkCTVGQHnOTvNZq6b87vN0CxTPZpcrU_dogYPG2v1xs");  // 设置微信企业号的app corpSecret
+
+        WxCpServiceImpl wxCpService = new WxCpServiceImpl();
+        wxCpService.setWxCpConfigStorage(config);
+
+        WxCpMessage message = WxCpMessage.TEXT().agentId(1000002).toUser("WangGuoPing").content(sb.toString()).build();
+
+        wxCpService.getMessageService().send(message);
+    }
 }
