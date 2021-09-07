@@ -115,11 +115,11 @@ class DemoApplicationTests {
     @Test
     void testFundApi() {
 
-        String json = fundApi.queryPredictResult("161725");
+        String json = fundApi.queryPredictResult("513050");
         PredictResult predictResult = JSONUtil.toBean(json, PredictResult.class);
         System.out.println(JSONUtil.toJsonStr(predictResult));
 
-        String fundInfo = fundApi.queryFundInfo("161725");
+        String fundInfo = fundApi.queryFundInfo("513050");
         FundInfoResult fundInfoResult = JSONUtil.toBean(fundInfo, FundInfoResult.class);
         System.out.println(JSONUtil.toJsonStr(fundInfoResult));
     }

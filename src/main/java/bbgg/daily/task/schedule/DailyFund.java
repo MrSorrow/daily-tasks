@@ -39,6 +39,7 @@ public class DailyFund {
         FUND_CODE_LIST_WANG.add("160222");
         FUND_CODE_LIST_WANG.add("006757");
         FUND_CODE_LIST_WANG.add("001579");
+        FUND_CODE_LIST_WANG.add("161720");
     }
 
     @Autowired
@@ -89,7 +90,7 @@ public class DailyFund {
         sb.append("\r\n").append("[").append(index).append("]")
                 .append(expansion.getShortName()).append(":").append("\r\n")
                 .append("· 单位净值：").append(detailData.getDwjz()).append("\r\n")
-                .append("· 日涨跌幅：").append(detailData.getRzdf()).append("\r\n")
+                .append("· 日涨跌幅：").append(detailData.getRzdf()).append("%").append("\r\n")
                 .append("· 预测估值：").append(expansion.getGz()).append("\r\n")
                 .append("· 估算涨幅：").append(expansion.getGszzl()).append("%").append("\r\n")
                 .append("· 预测时间：").append(DateUtil.format(expansion.getGztime(), "MM-dd HH:mm")).append("\r\n");
