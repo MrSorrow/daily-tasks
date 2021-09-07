@@ -1,10 +1,7 @@
 package bbgg.daily.task.schedule;
 
 import bbgg.daily.task.api.fund.FundApi;
-import bbgg.daily.task.api.fund.model.Expansion;
 import bbgg.daily.task.api.fund.model.PredictResult;
-import bbgg.daily.task.api.hefeng.WeatherApi;
-import bbgg.daily.task.api.hefeng.model.WeatherResult;
 import bbgg.daily.task.constants.Constants;
 import bbgg.daily.task.push.WxPush;
 import cn.hutool.core.date.DateUtil;
@@ -25,16 +22,21 @@ import java.util.*;
 @Component
 public class DailyFund {
 
-    private static final List<String> FUND_CODE_LIST;
+    private static final List<String> FUND_CODE_LIST_ZHOU;
+    private static final List<String> FUND_CODE_LIST_WANG;
 
     static {
-        FUND_CODE_LIST = new ArrayList<>(6);
-        FUND_CODE_LIST.add("161725");
-        FUND_CODE_LIST.add("160225");
-        FUND_CODE_LIST.add("008282");
-        FUND_CODE_LIST.add("160222");
-        FUND_CODE_LIST.add("006757");
-        FUND_CODE_LIST.add("001579");
+        FUND_CODE_LIST_ZHOU = new ArrayList<>(6);
+        FUND_CODE_LIST_ZHOU.add("161725");
+        FUND_CODE_LIST_ZHOU.add("160225");
+
+        FUND_CODE_LIST_WANG = new ArrayList<>(6);
+        FUND_CODE_LIST_WANG.add("161725");
+        FUND_CODE_LIST_WANG.add("160225");
+        FUND_CODE_LIST_WANG.add("008282");
+        FUND_CODE_LIST_WANG.add("160222");
+        FUND_CODE_LIST_WANG.add("006757");
+        FUND_CODE_LIST_WANG.add("001579");
     }
 
     @Autowired
@@ -42,26 +44,46 @@ public class DailyFund {
     @Autowired
     private FundApi fundApi;
 
-    @Scheduled(cron = "0 0 14 * * ? ")
+    @Scheduled(cron = "0 0 14 ? * 2,3,4,5,6 ")
     public void toMissZhou() {
 
         StringBuilder sb = new StringBuilder();
         sb.append("【基金行情播报】\r\n");
 
-        for (int i = 0; i < FUND_CODE_LIST.size(); i++) {
-
-            String json = fundApi.queryPredictResult(FUND_CODE_LIST.get(i));
-            PredictResult predictResult = JSONUtil.toBean(json, PredictResult.class);
-            Expansion expansion = predictResult.getExpansion();
-
-            sb.append("\r\n").append("[").append(i + 1).append("]")
-                    .append(expansion.getShortName()).append(":").append("\r\n")
-                    .append("· 估值：").append(expansion.getGz()).append("\r\n")
-                    .append("· 估算涨幅：").append(expansion.getGszzl()).append("%").append("\r\n")
-                    .append("· 预测时间：").append(DateUtil.format(expansion.getGztime(), "MM-dd HH:mm")).append("\r\n");
-
+        for (int i = 0; i < FUND_CODE_LIST_ZHOU.size(); i++) {
+            sb.append(getFundBoardCastText(i + 1, FUND_CODE_LIST_ZHOU.get(i)));
         }
 
-        wxPush.pushTextMsg(sb.toString(), Constants.MMGG_PARTY);
+        wxPush.pushTextMsgToUser(sb.toString(), Constants.MISS_ZHOU_USER);
+    }
+
+
+    @Scheduled(cron = "0 30 14 ? * 2,3,4,5,6 ")
+    public void toMrWang() {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("【基金行情播报】\r\n");
+
+        for (int i = 0; i < FUND_CODE_LIST_WANG.size(); i++) {
+            sb.append(getFundBoardCastText(i + 1, FUND_CODE_LIST_WANG.get(i)));
+        }
+
+        wxPush.pushTextMsgToUser(sb.toString(), Constants.MR_WANG_USER);
+    }
+
+
+    private String getFundBoardCastText(int index, String fundCode) {
+        String json = fundApi.queryPredictResult(fundCode);
+        PredictResult predictResult = JSONUtil.toBean(json, PredictResult.class);
+        PredictResult.Expansion expansion = predictResult.getExpansion();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("\r\n").append("[").append(index).append("]")
+                .append(expansion.getShortName()).append(":").append("\r\n")
+                .append("· 估值：").append(expansion.getGz()).append("\r\n")
+                .append("· 估算涨幅：").append(expansion.getGszzl()).append("%").append("\r\n")
+                .append("· 预测时间：").append(DateUtil.format(expansion.getGztime(), "MM-dd HH:mm")).append("\r\n");
+
+        return sb.toString();
     }
 }

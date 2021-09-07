@@ -24,13 +24,23 @@ public class WxPush {
     @Autowired
     private WxCpService wxCpService;
 
-    public void pushTextMsg(String msg, String party) {
+    public void pushTextMsgToParty(String msg, String party) {
         WxCpMessage message = WxCpMessage.TEXT().agentId(Constants.AGENT_ID).toParty(party).content(msg).build();
 
         try {
             wxCpService.getMessageService().send(message);
         } catch (WxErrorException e) {
             log.error("WxPush.pushTextMsg error, msg: {}, party: {}", msg, party, e);
+        }
+    }
+
+    public void pushTextMsgToUser(String msg, String user) {
+        WxCpMessage message = WxCpMessage.TEXT().agentId(Constants.AGENT_ID).toUser(user).content(msg).build();
+
+        try {
+            wxCpService.getMessageService().send(message);
+        } catch (WxErrorException e) {
+            log.error("WxPush.pushTextMsg error, msg: {}, user: {}", msg, user, e);
         }
     }
 

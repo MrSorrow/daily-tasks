@@ -11,6 +11,8 @@ public class Constants {
     public static final Integer AGENT_ID = 1000002;
 
     public static final String MMGG_PARTY = "1";
+    public static final String MISS_ZHOU_USER = "ZhouSiQi";
+    public static final String MR_WANG_USER = "WangGuoPing";
 
 
     public static final String HEFENG_WEATHER_KEY = "556c4eb72cc04bb986ebda1ac4a3676f";

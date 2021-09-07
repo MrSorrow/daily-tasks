@@ -1,7 +1,7 @@
 package bbgg.daily.task;
 
 import bbgg.daily.task.api.fund.FundApi;
-import bbgg.daily.task.api.fund.model.Expansion;
+import bbgg.daily.task.api.fund.model.FundInfoResult;
 import bbgg.daily.task.api.fund.model.PredictResult;
 import bbgg.daily.task.api.hefeng.CityApi;
 import bbgg.daily.task.api.hefeng.WeatherApi;
@@ -112,6 +112,18 @@ class DemoApplicationTests {
 
     }
 
+    @Test
+    void testFundApi() {
+
+        String json = fundApi.queryPredictResult("161725");
+        PredictResult predictResult = JSONUtil.toBean(json, PredictResult.class);
+        System.out.println(JSONUtil.toJsonStr(predictResult));
+
+        String fundInfo = fundApi.queryFundInfo("161725");
+        FundInfoResult fundInfoResult = JSONUtil.toBean(fundInfo, FundInfoResult.class);
+        System.out.println(JSONUtil.toJsonStr(fundInfoResult));
+    }
+
 
     @Test
     void testPredictFund() throws WxErrorException {
@@ -126,7 +138,7 @@ class DemoApplicationTests {
 
             String json = fundApi.queryPredictResult(FUND_CODE_LIST.get(i));
             PredictResult predictResult = JSONUtil.toBean(json, PredictResult.class);
-            Expansion expansion = predictResult.getExpansion();
+            PredictResult.Expansion expansion = predictResult.getExpansion();
 
             sb.append("\r\n").append("[").append(i + 1).append("]")
                     .append(expansion.getShortName()).append(":").append("\r\n")

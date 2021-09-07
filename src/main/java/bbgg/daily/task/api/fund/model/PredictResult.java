@@ -1,31 +1,55 @@
 package bbgg.daily.task.api.fund.model;
+
 import cn.hutool.core.annotation.Alias;
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
 @ToString
-public class PredictResult {
+public class PredictResult extends BaseResult<List<String>, PredictResult.Expansion> {
 
-    @Alias("Datas")
-    private List<String> datas;
+    @Getter
+    @Setter
+    @ToString
+    public static class Expansion {
 
-    @Alias("ErrCode")
-    private Integer errCode;
+        @Alias("FCODE")
+        private String fCode;
+        @Alias("SHORTNAME")
+        private String shortName;
+        @Alias("GZTIME")
+        private Date gztime;
+        @Alias("GZ")
+        private String gz;
+        @Alias("GSZZL")
+        private String gszzl;
+        @Alias("GZZF")
+        private String gzzf;
+        @Alias("SGZT")
+        private String sgzt;
+        @Alias("SHZT")
+        private String shzt;
+        @Alias("SOURCERATE")
+        private String sourceRate;
 
-    @Alias("ErrMsg")
-    private String errMsg;
+        private String rate;
+        @Alias("DTZT")
+        private String dtzt;
+        @Alias("ISBUY")
+        private String isbuy;
+        @Alias("JZRQ")
+        private Date jzrq;
+        @Alias("DWJZ")
+        private String dwjz;
+        @Alias("BUY")
+        private boolean buy;
+        @Alias("market")
+        private String Market;
 
-    @Alias("TotalCount")
-    private Integer totalCount;
-
-    @Alias("Expansion")
-    private Expansion expansion;
-
+    }
 }

@@ -4,14 +4,12 @@ import bbgg.daily.task.api.hefeng.WeatherApi;
 import bbgg.daily.task.api.hefeng.model.WeatherResult;
 import bbgg.daily.task.constants.Constants;
 import bbgg.daily.task.push.WxPush;
-import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,36 +38,47 @@ public class DailyWeather {
 
     @Scheduled(cron = "0 1 6 * * ? ")
     public void toMissZhou() {
-
         CITIES_MAP.forEach((city, location) -> {
-            WeatherResult weatherResult = weatherApi.queryWeatherNow(location);
-            WeatherResult.NowWeather now = weatherResult.getNow();
-
-            int days = 3;
-            WeatherResult nextDaysWeather = weatherApi.queryNextDaysWeather(days, location);
-
-            StringBuilder sb = new StringBuilder();
-            sb.append(city).append("天气预报：\r\n")
-                    .append("· 天气：").append(now.getText()).append("\r\n")
-                    .append("· 温度：").append(now.getTemp()).append("℃").append("\r\n")
-                    .append("· 体感温度：").append(now.getFeelsLike()).append("℃").append("\r\n")
-                    .append("· 详细数据：").append("<a href=\"").append(weatherResult.getFxLink()).append("\">点击查看</a>").append("\r\n")
-                    .append("· 数据观测于：").append(DateUtil.format(now.getObsTime(), "MM-dd HH:mm")).append("\r\n");
-
-            sb.append("\r\n").append("未来").append(days).append("天的天气状况：");
-
-            if (nextDaysWeather != null) {
-                List<WeatherResult.DayWeather> dailyWeather = nextDaysWeather.getDaily();
-                for (WeatherResult.DayWeather dayWeather : dailyWeather) {
-                    sb.append("\r\n")
-                            .append("· ")
-                            .append(dayWeather.getFxDate())
-                            .append(": ")
-                            .append(dayWeather.getTextDay());
-                }
-            }
-
-            wxPush.pushTextMsg(sb.toString(), Constants.MMGG_PARTY);
+            String boardCastText = getWeatherBoardCastText(city, location);
+            wxPush.pushTextMsgToUser(boardCastText, Constants.MISS_ZHOU_USER);
         });
+    }
+
+    @Scheduled(cron = "0 1 10 * * ? ")
+    public void toMrWang() {
+        CITIES_MAP.forEach((city, location) -> {
+            String boardCastText = getWeatherBoardCastText(city, location);
+            wxPush.pushTextMsgToUser(boardCastText, Constants.MR_WANG_USER);
+        });
+    }
+
+    private String getWeatherBoardCastText(String city, String location) {
+        WeatherResult weatherResult = weatherApi.queryWeatherNow(location);
+        WeatherResult.NowWeather now = weatherResult.getNow();
+
+        int days = 3;
+        WeatherResult nextDaysWeather = weatherApi.queryNextDaysWeather(days, location);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(city).append("天气预报：\r\n")
+                .append("· 天气：").append(now.getText()).append("\r\n")
+                .append("· 温度：").append(now.getTemp()).append("℃").append("\r\n")
+                .append("· 体感温度：").append(now.getFeelsLike()).append("℃").append("\r\n")
+                .append("· 详细数据：").append("<a href=\"").append(weatherResult.getFxLink()).append("\">点击查看</a>").append("\r\n")
+                .append("· 数据观测于：").append(DateUtil.format(now.getObsTime(), "MM-dd HH:mm")).append("\r\n");
+
+        sb.append("\r\n").append("未来").append(days).append("天的天气状况：");
+
+        if (nextDaysWeather != null) {
+            List<WeatherResult.DayWeather> dailyWeather = nextDaysWeather.getDaily();
+            for (WeatherResult.DayWeather dayWeather : dailyWeather) {
+                sb.append("\r\n")
+                        .append("· ")
+                        .append(dayWeather.getFxDate())
+                        .append(": ")
+                        .append(dayWeather.getTextDay());
+            }
+        }
+        return sb.toString();
     }
 }
