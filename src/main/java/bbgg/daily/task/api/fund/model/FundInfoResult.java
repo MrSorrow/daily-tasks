@@ -40,14 +40,24 @@ public class FundInfoResult {
     @Setter
     @ToString
     public static class FundDetailDatas {
-        private String FCODE;
-        private String SHORTNAME;
+        @Alias("FCODE")
+        private String fCode;
+        @Alias("SHORTNAME")
+        private String shortName;
         private String FTYPE;
         private String FEATURE;
         private String BFUNDTYPE;
         private String FUNDTYPE;
-        private String RZDF;
-        private String DWJZ;
+        /**
+         * 日涨跌幅
+         */
+        @Alias("RZDF")
+        private String rzdf;
+        /**
+         * 单位净值
+         */
+        @Alias("DWJZ")
+        private String dwjz;
         private String LJJZ;
         private String SGZT;
         private String SHZT;

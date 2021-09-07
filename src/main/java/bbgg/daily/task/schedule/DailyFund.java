@@ -1,6 +1,8 @@
 package bbgg.daily.task.schedule;
 
 import bbgg.daily.task.api.fund.FundApi;
+import bbgg.daily.task.api.fund.model.FundBaseResult;
+import bbgg.daily.task.api.fund.model.FundInfoResult;
 import bbgg.daily.task.api.fund.model.PredictResult;
 import bbgg.daily.task.constants.Constants;
 import bbgg.daily.task.push.WxPush;
@@ -77,10 +79,18 @@ public class DailyFund {
         PredictResult predictResult = JSONUtil.toBean(json, PredictResult.class);
         PredictResult.Expansion expansion = predictResult.getExpansion();
 
+        String fundInfoJson = fundApi.queryFundInfo(fundCode);
+        FundInfoResult fundInfo = JSONUtil.toBean(fundInfoJson, FundInfoResult.class);
+        FundBaseResult<FundInfoResult.FundDetailDatas, String> fundDetail = fundInfo.getFundDetail();
+        FundInfoResult.FundDetailDatas detailData = fundDetail.getDatas();
+
+
         StringBuilder sb = new StringBuilder();
         sb.append("\r\n").append("[").append(index).append("]")
                 .append(expansion.getShortName()).append(":").append("\r\n")
-                .append("· 估值：").append(expansion.getGz()).append("\r\n")
+                .append("· 单位净值：").append(detailData.getDwjz()).append("\r\n")
+                .append("· 日涨跌幅：").append(detailData.getRzdf()).append("\r\n")
+                .append("· 预测估值：").append(expansion.getGz()).append("\r\n")
                 .append("· 估算涨幅：").append(expansion.getGszzl()).append("%").append("\r\n")
                 .append("· 预测时间：").append(DateUtil.format(expansion.getGztime(), "MM-dd HH:mm")).append("\r\n");
 
