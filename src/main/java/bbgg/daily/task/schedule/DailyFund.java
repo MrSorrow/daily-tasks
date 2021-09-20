@@ -47,7 +47,7 @@ public class DailyFund {
     @Autowired
     private FundApi fundApi;
 
-    @Scheduled(cron = "0 0 14 ? * 2,3,4,5,6 ")
+    @Scheduled(cron = "0 0 14 ? * 1,2,3,4,5 ")
     public void toMissZhou() {
 
         StringBuilder sb = new StringBuilder();
@@ -61,7 +61,7 @@ public class DailyFund {
     }
 
 
-    @Scheduled(cron = "0 30 14 ? * 2,3,4,5,6 ")
+    @Scheduled(cron = "0 30 14 ? * 1,2,3,4,5 ")
     public void toMrWang() {
 
         StringBuilder sb = new StringBuilder();

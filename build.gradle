@@ -24,6 +24,7 @@ dependencies {
 	compile 'com.github.lianjiatech:retrofit-spring-boot-starter:2.2.12'
 	compile 'com.github.binarywang:weixin-java-cp:4.1.0'
 	implementation 'cn.hutool:hutool-all:5.5.8'
+	implementation 'org.mitre.dsmiley.httpproxy:smiley-http-proxy-servlet:1.11'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
